@@ -1,55 +1,66 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: N/A → 1.0.0
+- Modified principles: All principles added from scratch based on project requirements
+- Added sections: Book Development Standards, RAG Chatbot Standards, Technical Constraints, Success Criteria
+- Removed sections: None (new constitution)
+- Templates requiring updates:
+  - ✅ plan-template.md: Constitution Check section exists and will enforce new principles
+  - ✅ spec-template.md: Requirements section will align with new principles
+  - ✅ tasks-template.md: Task categorization reflects new principle-driven requirements
+  - ✅ adr-template.md: Architecture decisions will follow new principles
+  - ✅ checklist-template.md: Checklists will verify compliance with new principles
+- Follow-up TODOs: None
+-->
+# Unified Book + RAG System Constitution — "Physical AI & Humanoid Robotics"
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### Accuracy & Reliability
+All scientific, technical, and historical claims must come from credible sources (Peer-reviewed research, robotics textbooks, official documentation, standards). All statements must be traceable and verifiable.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### Clarity & Accessibility
+Written for readers with CS / AI / engineering backgrounds. Concepts should build progressively from fundamentals → advanced robotics. Use clear explanations, diagrams, and examples to support understanding.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### Reproducibility & Transparency
+Algorithms must include explanations + pseudo code or code snippets. Architectural diagrams, control loops, sensor/actuator explanations must be replicable. All citations in consistent APA format.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### Safety & Ethical Responsibility
+Include discussions on safety, human-robot interaction, alignment, biases, and limitations. The Chaybot must never output unsafe robotics instructions or hallucinated content.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### Unified Source of Truth
+The book's content is the only authoritative dataset used by the Chatbot. RAG system must not use external internet content unless explicitly designed for it.
 
-### [PRINCIPLE_6_NAME]
+### Technical Standards Compliance
+Minimum sources: 80 (40% peer-reviewed). Zero plagiarism tolerance. Writing clarity: Flesch-Kincaid grade 12 (technical but readable). Markdown format compatible with Docusaurus. Include: diagrams with captions, code examples, tables, architecture sections. Every claim that sounds factual must include citation. Organize book into modular chapters: Fundamentals → AI Systems → Robotics Hardware → Embodiment → Control → Vision → Motion → Ethics → Future Directions.
 
+## Book Development Standards
+- Word count target: 70,000–100,000 words.
+- Docusaurus build must succeed without errors.
+- Deploy via GitHub Pages using GitHub Actions workflow.
+- Include diagrams with captions, code examples, tables, architecture sections.
+- Organize book into modular chapters covering: Fundamentals → AI Systems → Robotics Hardware → Embodiment → Control → Vision → Motion → Ethics → Future Directions.
 
-[PRINCIPLE__DESCRIPTION]
+## RAG Chatbot Standards
+- Retrieval: Qdrant Cloud Free Tier as vector store. Embedding generated from final published book. User-selected text must trigger local-context-only answers.
+- Generation: Answers must cite the exact source location (chapter/section). If no relevant information found → respond: "This topic is not covered in the book."
+- Safety: Disallow harmful robotics instructions (e.g., weaponization). No hallucinations; bot should clearly state uncertainty.
+- System behavior: Answers must be grounded, concise, and technically accurate. Tone: professional technical assistant / tutor.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technical Constraints
+- Book: Target word count 70,000–100,000 words, Docusaurus compatible, deployable via GitHub Pages.
+- Chatbot: Backend: FastAPI. Databases: Neon Serverless Postgres + Qdrant. Integration: OpenAI Agents with Free Gemini 2.5 Flash model / ChatKit SDK. Frontend: JS/React widget embedded inside Docusaurus site.
+- Must run on free-tier friendly architecture.
+- Sanitize all user inputs.
+- No sensitive keys stored in client-side code.
+- Follow best practices for API security and environment variables.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Success Criteria
+- BOOK: All chapters complete, coherent, and technically accurate. Claims verified and properly cited. Build passes Docusaurus validation and renders correctly on GitHub Pages. At least one technical reviewer validates core robotics content.
+- CHATBOT: Can answer >80% of book-related questions correctly using retrieved context. Always cites chapter/section for source. Correctly handles "not in book" queries. Seamlessly embedded into book UI.
+- OVERALL: Unified documentation, clear structure, zero plagiarism, strong technical foundation. Final book + chatbot deployed and publicly accessible on GitHub Pages.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+This constitution governs all development activities for the Unified Book + RAG System project. All code, documentation, and system design must comply with these principles. Amendments to this constitution require explicit approval and must be documented with clear rationale. All team members must review and acknowledge these principles before contributing to the project. Code reviews must verify compliance with all listed principles. Any conflicts between this constitution and other project documentation must be resolved in favor of this constitution.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-06 | **Last Amended**: 2025-12-06

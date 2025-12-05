@@ -1,0 +1,98 @@
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+
+// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+
+/**
+ * Creating a sidebar enables you to:
+ - create an ordered group of docs
+ - render a sidebar for each doc of that group
+ - provide next/previous navigation
+
+ The sidebars can be generated from the filesystem, or explicitly defined here.
+
+ Create as many sidebars as you want.
+ */
+const sidebars: SidebarsConfig = {
+  // By default, Docusaurus generates a sidebar from the docs folder structure
+  tutorialSidebar: [
+    {
+      type: 'category',
+      label: 'Introduction',
+      items: [
+        'intro/what-is-physical-ai',
+        'intro/humanoid-roadmap'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Module 1: ROS2',
+      items: [
+        'module-1-ros2/ros2-basics',
+        'module-1-ros2/ros2-nodes',
+        'module-1-ros2/ros2-topics',
+        'module-1-ros2/ros2-services-actions',
+        'module-1-ros2/urdf',
+        'module-1-ros2/ros2-control'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Module 2: Simulation (Gazebo & Unity)',
+      items: [
+        'module-2-gazebo-unity/gazebo-basics',
+        'module-2-gazebo-unity/sdf-urdf-import',
+        'module-2-gazebo-unity/unity-robotics-hub',
+        'module-2-gazebo-unity/ros2-unity-bridge'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Module 3: NVIDIA Isaac',
+      items: [
+        'module-3-isaac/isaac-intro',
+        'module-3-isaac/isaac-sim-basics',
+        'module-3-isaac/isaac-ros',
+        'module-3-isaac/vlm-integration'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Module 4: Vision-Language-Action',
+      items: [
+        'module-4-vla/vlm-overview',
+        'module-4-vla/transformers-for-robots',
+        'module-4-vla/openvla',
+        'module-4-vla/action-generation'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Capstone: Autonomous Humanoid',
+      items: [
+        'capstone/project-overview',
+        'capstone/hardware-design',
+        'capstone/software-architecture',
+        'capstone/navigation',
+        'capstone/perception',
+        'capstone/control'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Appendix',
+      items: [
+        'appendix/glossary',
+        'appendix/resources'
+      ],
+    },
+    {
+      type: 'category',
+      label: 'References',
+      items: [
+        'references/index'
+      ],
+    },
+  ],
+};
+
+export default sidebars;

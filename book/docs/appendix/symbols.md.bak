@@ -1,0 +1,112 @@
+---
+sidebar_label: Mathematical Symbols
+---
+
+# Mathematical Symbols
+
+This appendix provides a reference for mathematical notation used throughout the Physical AI & Humanoid Robotics book.
+
+## General Notation
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $\mathbb{R}$ | Real numbers | Set of real numbers |
+| $\mathbb{R}^n$ | Real n-dimensional space | n-dimensional Euclidean space |
+| $\mathbb{N}$ | Natural numbers | Set of positive integers |
+| $\mathbb{Z}$ | Integers | Set of all integers |
+| $\mathcal{N}(\mu, \sigma^2)$ | Normal distribution | Gaussian distribution with mean μ and variance σ² |
+| $\nabla$ | Gradient | Vector of partial derivatives |
+| $\partial$ | Partial derivative | Partial derivative operator |
+| $\int$ | Integral | Integration operator |
+| $\sum$ | Sum | Summation operator |
+| $\prod$ | Product | Product operator |
+| $\in$ | Element of | Membership in a set |
+| $\forall$ | For all | Universal quantifier |
+| $\exists$ | There exists | Existential quantifier |
+| $\to$ | Approaches | Tends to, converges to |
+| $\propto$ | Proportional to | Proportional to |
+| $\equiv$ | Equivalent | Identically equal |
+
+## Vectors and Matrices
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $\mathbf{x}$ | Vector | Column vector (bold lowercase) |
+| $\mathbf{A}$ | Matrix | Matrix (bold uppercase) |
+| $\mathbf{x}^T$ | Transpose | Transpose of vector or matrix |
+| $\mathbf{x}^\top$ | Transpose | Alternative notation for transpose |
+| $\mathbf{I}$ | Identity matrix | Square matrix with ones on diagonal |
+| $\det(\mathbf{A})$ | Determinant | Determinant of matrix A |
+| $\operatorname{tr}(\mathbf{A})$ | Trace | Trace of matrix A |
+| $\lVert \mathbf{x} \rVert$ | Norm | Euclidean norm of vector x |
+| $\lVert \mathbf{x} \rVert_2$ | L2 norm | Euclidean norm |
+| $\lVert \mathbf{x} \rVert_1$ | L1 norm | Sum of absolute values |
+| $\langle \mathbf{x}, \mathbf{y} \rangle$ | Inner product | Dot product of vectors x and y |
+| $\mathbf{x} \cdot \mathbf{y}$ | Dot product | Alternative notation for inner product |
+| $\mathbf{x} \times \mathbf{y}$ | Cross product | Cross product of 3D vectors |
+
+## Kinematics and Dynamics
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $\theta$ | Joint angle | Angle of a revolute joint |
+| $\dot\theta$ | Joint velocity | Time derivative of joint angle |
+| $\ddot\theta$ | Joint acceleration | Second time derivative of joint angle |
+| $\mathbf{q}$ | Joint configuration | Vector of all joint variables |
+| $\dot{\mathbf{q}}$ | Joint velocity | Time derivative of joint configuration |
+| $\ddot{\mathbf{q}}$ | Joint acceleration | Second time derivative of joint configuration |
+| $\mathbf{J}$ | Jacobian | Matrix relating joint velocities to end-effector velocities |
+| $\mathbf{M}(\mathbf{q})$ | Mass matrix | Inertia matrix as function of configuration |
+| $\mathbf{C}(\mathbf{q}, \dot{\mathbf{q}})$ | Coriolis matrix | Coriolis and centrifugal forces matrix |
+| $\mathbf{g}(\mathbf{q})$ | Gravity vector | Gravity forces as function of configuration |
+| $\boldsymbol{\tau}$ | Joint torques | Vector of applied joint torques |
+| $\mathbf{x}$ | End-effector pose | Position and orientation of end-effector |
+| $\mathbf{v}$ | Velocity | Linear velocity vector |
+| $\boldsymbol{\omega}$ | Angular velocity | Angular velocity vector |
+| $\mathbf{R}$ | Rotation matrix | 3x3 rotation matrix |
+| $\mathbf{T}$ | Transformation matrix | 4x4 homogeneous transformation matrix |
+
+## Probabilities and Statistics
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $P(A)$ | Probability | Probability of event A |
+| $P(A \mid B)$ | Conditional probability | Probability of A given B |
+| $p(x)$ | Probability density | Probability density function |
+| $\mathbb{E}[X]$ | Expected value | Expected value of random variable X |
+| $\operatorname{Var}[X]$ | Variance | Variance of random variable X |
+| $\operatorname{Cov}[X,Y]$ | Covariance | Covariance between X and Y |
+| $\sigma^2$ | Variance | Variance of a distribution |
+| $\mu$ | Mean | Mean of a distribution |
+| $\Sigma$ | Covariance matrix | Covariance matrix |
+| $\perp$ | Independent | Statistical independence |
+
+## Control Theory
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $s$ | Laplace variable | Complex frequency variable |
+| $G(s)$ | Transfer function | System transfer function |
+| $K_p, K_i, K_d$ | PID gains | Proportional, integral, derivative gains |
+| $u(t)$ | Control input | Control signal as function of time |
+| $y(t)$ | System output | System response as function of time |
+| $r(t)$ | Reference input | Desired system response |
+| $e(t)$ | Error signal | Difference between reference and output |
+| $H(s)$ | Feedback transfer function | Feedback path transfer function |
+| $\zeta$ | Damping ratio | Damping ratio in second-order systems |
+| $\omega_n$ | Natural frequency | Natural frequency in second-order systems |
+| $\omega_c$ | Crossover frequency | Frequency where gain equals 1 |
+
+## Optimization
+
+| Symbol | Meaning | Description |
+|--------|---------|-------------|
+| $\min$ | Minimize | Minimization operator |
+| $\max$ | Maximize | Maximization operator |
+| $\arg\min$ | Argmin | Value that minimizes the function |
+| $\arg\max$ | Argmax | Value that maximizes the function |
+| $f(\mathbf{x})$ | Objective function | Function to be optimized |
+| $\text{s.t.}$ | Subject to | Constraint specification |
+| $\lambda$ | Lagrange multiplier | Multiplier in constrained optimization |
+| $\mathcal{L}$ | Lagrangian | Lagrangian function |
+| $\odot$ | Hadamard product | Element-wise multiplication |
