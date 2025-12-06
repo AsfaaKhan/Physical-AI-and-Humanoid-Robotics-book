@@ -15,15 +15,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-username.github.io', // Update this to your GitHub Pages URL
+  url: 'https://AsfaaKhan.github.io', // Update this to your GitHub Pages URL
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/Human-ai-book-Hackathon/', // Update this to match your repo name if deploying to GitHub Pages
+  baseUrl: '/Physical-AI-and-Humanoid-Robotics-book/', // Update this to match your repo name if deploying to GitHub Pages
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-username', // Usually your GitHub org/user name.
-  projectName: 'Human-ai-book-Hackathon', // Usually your repo name.
+  organizationName: 'AsfaaKhan', // Usually your GitHub org/user name.
+  projectName: 'Physical-AI-and-Humanoid-Robotics-book', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
@@ -89,7 +89,7 @@ const config: Config = {
         },
         {to: '/blog', label: 'Blog', position: 'left'},
         {
-          href: 'https://github.com/your-username/Human-ai-book-Hackathon',
+          href: 'https://github.com/AsfaaKhan/Physical-AI-and-Humanoid-Robotics-book',
           label: 'GitHub',
           position: 'right',
         },
@@ -141,7 +141,7 @@ const config: Config = {
             },
             {
               label: 'GitHub',
-              href: 'https://github.com/your-username/Human-ai-book-Hackathon',
+              href: 'https://github.com/AsfaaKhan/Physical-AI-and-Humanoid-Robotics-book',
             },
           ],
         },
