@@ -5,26 +5,31 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  path:
+    - 'book/**'
+    - '.github/workflows/deploy-book.yml'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: book
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
       with:
         node-version: 18
         cache: 'npm'
+        cache-dependency-path: 'book/package-lock.json'
 
     - name: Install dependencies
-      run: |
-        cd book
-        npm ci
+      run: npm ci
 
     - name: Build site
-      run: |
-        cd book
-        npm run build
+      run: npm run build
 
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
