@@ -7,7 +7,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 const config: Config = {
   title: 'Physical AI & Humanoid Robotics',
   tagline: 'Comprehensive Guide to Embodied Intelligence',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/docusaurus-social-card.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
@@ -70,7 +70,7 @@ const config: Config = {
 
   themeConfig: {
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/docusaurus-social-card.png',
     colorMode: {
       respectPrefersColorScheme: true,
     },
@@ -78,7 +78,7 @@ const config: Config = {
       title: 'Physical AI & Robotics',
       logo: {
         alt: 'Physical AI & Humanoid Robotics Book Logo',
-        src: 'img/logo.svg',
+        src: 'img/docusaurus-social-card.png',
       },
       items: [
         {

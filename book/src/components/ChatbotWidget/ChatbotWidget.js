@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ChatbotWidget.css';
 
 const ChatbotWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { id: 1, role: 'assistant', content: 'Hello! I\'m your Physical AI & Humanoid Robotics assistant. Ask me anything about the book content!' }
+  ]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [useSelectedText, setUseSelectedText] = useState(false);
   const [selectedText, setSelectedText] = useState('');
-  const [backendUrl, setBackendUrl] = useState('http://localhost:8000'); // Default local URL
+  const messagesEndRef = useRef(null);
 
   // Function to get selected text from the page
   const getSelectedText = () => {
@@ -16,7 +18,6 @@ const ChatbotWidget = () => {
     if (text) {
       setSelectedText(text);
       setUseSelectedText(true);
-      console.log('Selected text:', text); // For debugging
     }
     return text;
   };
@@ -24,11 +25,7 @@ const ChatbotWidget = () => {
   // Handle text selection
   useEffect(() => {
     const handleSelection = () => {
-      const text = getSelectedText();
-      if (text && !isOpen) {
-        // Optionally open the chat if text is selected
-        // setIsOpen(true);
-      }
+      getSelectedText();
     };
 
     document.addEventListener('mouseup', handleSelection);
@@ -37,19 +34,14 @@ const ChatbotWidget = () => {
     };
   }, []);
 
-  // Update backend URL when component mounts
+  // Scroll to bottom of messages
   useEffect(() => {
-    // Check if we're on GitHub Pages or other deployment
-    const currentOrigin = window.location.origin;
-    if (currentOrigin.includes('github.io')) {
-      // For GitHub Pages, use your deployed backend URL
-      // Replace with your actual deployed backend URL
-      setBackendUrl('https://your-rag-backend.onrender.com'); // Update this with your actual backend URL
-    } else {
-      // For local development
-      setBackendUrl('http://localhost:8000');
-    }
-  }, []);
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
@@ -58,7 +50,8 @@ const ChatbotWidget = () => {
   const sendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
 
-    const userMessage = { role: 'user', content: inputValue };
+    // Add user message
+    const userMessage = { id: Date.now(), role: 'user', content: inputValue };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
     setInputValue('');
@@ -72,10 +65,8 @@ const ChatbotWidget = () => {
         selected_text: useSelectedText ? selectedText : null
       };
 
-      console.log('Sending request:', payload); // For debugging
-
       // Call the backend API
-      const response = await fetch(`${backendUrl}/api/v1/ask`, {
+      const response = await fetch('http://localhost:8000/api/v1/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,39 +74,33 @@ const ChatbotWidget = () => {
         body: JSON.stringify(payload)
       });
 
-      console.log('Response status:', response.status); // For debugging
-
       if (!response.ok) {
-        const errorText = await response.text();
-        console.error('API error response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('API response:', data); // For debugging
 
+      // Add bot response
       const botMessage = {
+        id: Date.now() + 1,
         role: 'assistant',
         content: data.answer,
-        citations: data.citations,
+        citations: data.citations || [],
         confidence: data.confidence_estimate
       };
 
       setMessages([...newMessages, botMessage]);
     } catch (error) {
-      console.error('Error sending message:', error);
       const errorMessage = {
+        id: Date.now() + 1,
         role: 'assistant',
-        content: `Sorry, I encountered an error: ${error.message || 'Please try again.'}`
+        content: 'Sorry, I encountered an error. Please try again.'
       };
       setMessages([...newMessages, errorMessage]);
     } finally {
       setIsLoading(false);
-      // Only reset if we used selected text
-      if (useSelectedText) {
-        setUseSelectedText(false);
-        setSelectedText('');
-      }
+      setUseSelectedText(false);
+      setSelectedText('');
     }
   };
 
@@ -127,7 +112,7 @@ const ChatbotWidget = () => {
   };
 
   const clearChat = () => {
-    setMessages([]);
+    setMessages([{ id: 1, role: 'assistant', content: 'Hello! I\'m your Physical AI & Humanoid Robotics assistant. Ask me anything about the book content!' }]);
   };
 
   return (
@@ -147,40 +132,31 @@ const ChatbotWidget = () => {
           </div>
 
           <div className="chatbot-messages">
-            {messages.length === 0 ? (
-              <div className="chatbot-welcome">
-                <p>Hello! I'm your Physical AI & Humanoid Robotics assistant.</p>
-                <p>Ask me anything about the book content!</p>
-                <p><small>Select text on the page and ask questions about it!</small></p>
-              </div>
-            ) : (
-              messages.map((msg, index) => (
-                <div key={index} className={`chatbot-message ${msg.role}`}>
-                  <div className="message-content">
-                    {msg.content}
-                    {msg.citations && msg.citations.length > 0 && (
-                      <div className="citations">
-                        <h4>Citations:</h4>
-                        <ul>
-                          {msg.citations.map((citation, idx) => (
-                            <li key={idx}>
-                              {citation.metadata?.source ? (
-                                <a href={citation.metadata.source} target="_blank" rel="noopener noreferrer">
-                                  {citation.metadata.source.includes('github') ? 'GitHub Source' : citation.metadata.source.substring(0, 30) + '...'}
-                                </a>
-                              ) : (
-                                <span>Source document</span>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+            {messages.map((msg) => (
+              <div key={msg.id} className={`chatbot-message ${msg.role}`}>
+                <div className="message-content">
+                  {msg.content}
+                  {msg.citations && msg.citations.length > 0 && (
+                    <div className="citations">
+                      <h4>Citations:</h4>
+                      <ul>
+                        {msg.citations.map((citation, idx) => (
+                          <li key={idx}>
+                            {citation.metadata?.source ? (
+                              <a href={citation.metadata.source} target="_blank" rel="noopener noreferrer">
+                                {citation.metadata.source.includes('github') ? 'GitHub Source' : citation.metadata.source.substring(0, 50) + '...'}
+                              </a>
+                            ) : (
+                              <span>Source document</span>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              ))
-            )}
-
+              </div>
+            ))}
             {isLoading && (
               <div className="chatbot-message assistant">
                 <div className="message-content">
@@ -192,6 +168,7 @@ const ChatbotWidget = () => {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           <div className="chatbot-input-area">
@@ -207,7 +184,6 @@ const ChatbotWidget = () => {
                   type="checkbox"
                   checked={useSelectedText}
                   onChange={(e) => setUseSelectedText(e.target.checked)}
-                  disabled={!!selectedText && !useSelectedText} // Only disable if we have selected text but haven't enabled the option yet
                 />
                 Answer only using selected text
               </label>
@@ -219,14 +195,15 @@ const ChatbotWidget = () => {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Ask about Physical AI & Robotics..."
-                rows="2"
+                rows="1"
+                style={{ minHeight: '10px', resize: 'vertical' }}
               />
               <button
                 onClick={sendMessage}
                 disabled={!inputValue.trim() || isLoading}
                 className="send-button"
               >
-                {isLoading ? 'Sending...' : 'Send'}
+                {isLoading ? '...' : '➤'}
               </button>
             </div>
           </div>
@@ -235,7 +212,7 @@ const ChatbotWidget = () => {
 
       <button className="chatbot-button" onClick={toggleChat}>
         <span className="chatbot-icon">🤖</span>
-        {isOpen ? '' : 'AI Assistant'}
+        {isOpen ? '' : ''}
       </button>
     </div>
   );
