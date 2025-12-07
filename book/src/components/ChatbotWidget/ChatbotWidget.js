@@ -40,7 +40,7 @@ const ChatbotWidget = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef?.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const toggleChat = () => {
@@ -65,8 +65,8 @@ const ChatbotWidget = () => {
         selected_text: useSelectedText ? selectedText : null
       };
 
-      // Call the backend API
-      const response = await fetch('http://localhost:8000/api/v1/ask', {
+      // Call the backend API - Updated to match the actual backend API
+      const response = await fetch('http://localhost:8000/ask', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +75,8 @@ const ChatbotWidget = () => {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
       }
 
       const data = await response.json();
@@ -84,23 +85,26 @@ const ChatbotWidget = () => {
       const botMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: data.answer,
-        citations: data.citations || [],
-        confidence: data.confidence_estimate
+        content: data.answer || data.response || 'Sorry, I could not process your request.',
+        citations: data.citations || data.sources || [],
+        confidence: data.confidence_estimate || data.confidence_estimate
       };
 
-      setMessages([...newMessages, botMessage]);
+      setMessages(prevMessages => [...prevMessages, botMessage]);
     } catch (error) {
+      console.error('Error sending message:', error);
       const errorMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.'
+        content: `Sorry, I encountered an error: ${error.message || 'Please try again.'}`
       };
-      setMessages([...newMessages, errorMessage]);
+      setMessages(prevMessages => [...prevMessages, errorMessage]);
     } finally {
       setIsLoading(false);
-      setUseSelectedText(false);
-      setSelectedText('');
+      if (useSelectedText) {
+        setUseSelectedText(false);
+        setSelectedText('');
+      }
     }
   };
 
@@ -136,16 +140,18 @@ const ChatbotWidget = () => {
               <div key={msg.id} className={`chatbot-message ${msg.role}`}>
                 <div className="message-content">
                   {msg.content}
-                  {msg.citations && msg.citations.length > 0 && (
+                  {msg.citations && Array.isArray(msg.citations) && msg.citations.length > 0 && (
                     <div className="citations">
                       <h4>Citations:</h4>
                       <ul>
                         {msg.citations.map((citation, idx) => (
                           <li key={idx}>
-                            {citation.metadata?.source ? (
+                            {typeof citation === 'object' && citation.metadata?.source ? (
                               <a href={citation.metadata.source} target="_blank" rel="noopener noreferrer">
                                 {citation.metadata.source.includes('github') ? 'GitHub Source' : citation.metadata.source.substring(0, 50) + '...'}
                               </a>
+                            ) : typeof citation === 'string' ? (
+                              <span>{citation}</span>
                             ) : (
                               <span>Source document</span>
                             )}
@@ -212,7 +218,7 @@ const ChatbotWidget = () => {
 
       <button className="chatbot-button" onClick={toggleChat}>
         <span className="chatbot-icon">🤖</span>
-        {isOpen ? '' : ''}
+        {isOpen ? '' : '🤖'}
       </button>
     </div>
   );
