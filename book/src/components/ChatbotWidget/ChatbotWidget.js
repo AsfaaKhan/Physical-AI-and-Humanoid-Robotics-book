@@ -218,7 +218,7 @@ const ChatbotWidget = () => {
 
       <button className="chatbot-button" onClick={toggleChat}>
         <span className="chatbot-icon">🤖</span>
-        {isOpen ? '' : '🤖'}
+        {isOpen ? '' : ''}
       </button>
     </div>
   );
