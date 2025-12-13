@@ -18,7 +18,7 @@ const config: Config = {
   url: 'https://AsfaaKhan.github.io', // Update this to your GitHub Pages URL
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/Physical-AI-and-Humanoid-Robotics-book/', // Update this to match your repo name if deploying to GitHub Pages
+  baseUrl: '/', // Update this to match your repo name if deploying to GitHub Pages
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
