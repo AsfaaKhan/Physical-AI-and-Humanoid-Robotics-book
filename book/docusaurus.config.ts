@@ -15,15 +15,17 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://AsfaaKhan.github.io', // Update this to your GitHub Pages URL
+  url: 'https://asfaakhan.github.io', // GitHub Pages URL - lowercase org name
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/', // Update this to match your repo name if deploying to GitHub Pages
+  baseUrl: '/Physical-AI-and-Humanoid-Robotics-book/', // Match the repo name for GitHub Pages
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'AsfaaKhan', // Usually your GitHub org/user name.
   projectName: 'Physical-AI-and-Humanoid-Robotics-book', // Usually your repo name.
+  deploymentBranch: 'gh-pages', // Branch that GitHub Pages will deploy from
+  trailingSlash: false, // Set to false to remove trailing slashes
 
   onBrokenLinks: 'throw',
 
@@ -74,6 +76,9 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
+    metadata: [
+      {name: 'viewport', content: 'width=device-width, initial-scale=1.0'},
+    ],
     navbar: {
       title: 'Physical AI & Robotics',
       logo: {
@@ -88,6 +93,8 @@ const config: Config = {
           label: 'Book Chapters',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/auth/signup', label: 'Sign Up', position: 'right'},
+        {to: '/auth/signin', label: 'Sign In', position: 'right'},
         {
           href: 'https://github.com/AsfaaKhan/Physical-AI-and-Humanoid-Robotics-book',
           label: 'GitHub',
