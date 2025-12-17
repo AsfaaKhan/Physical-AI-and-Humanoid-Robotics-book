@@ -320,6 +320,298 @@ a:hover {
   text-decoration: underline !important;
 }
 
+/* Authentication Components */
+.auth-container {
+  max-width: 500px !important;
+  margin: 2rem auto !important;
+  padding: 2rem !important;
+  background: rgba(30, 30, 40, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--custom-border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  color: var(--custom-text-light) !important;
+}
+
+.auth-container h2 {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important;
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+}
+
+.auth-form {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important;
+}
+
+.form-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0.5rem !important;
+}
+
+.form-group label {
+  font-weight: 600 !important;
+  color: var(--custom-text-light) !important;
+  margin-bottom: 0.25rem !important;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem !important;
+  border: 1px solid var(--custom-border) !important;
+  border-radius: 10px !important;
+  background: rgba(20, 20, 30, 0.8) !important;
+  color: var(--custom-text-light) !important;
+  font-size: 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none !important;
+  border-color: var(--custom-accent-blue) !important;
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.2) !important;
+}
+
+.form-group input.error {
+  border-color: #ff4757 !important;
+}
+
+.auth-button {
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  border: none !important;
+  border-radius: 30px !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-top: 0.5rem !important;
+  width: 100% !important;
+}
+
+.auth-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 25px rgba(102, 16, 242, 0.4) !important;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+.auth-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.error-message {
+  background: rgba(255, 71, 87, 0.2) !important;
+  border: 1px solid #ff4757 !important;
+  border-radius: 10px !important;
+  padding: 0.75rem !important;
+  margin-bottom: 1rem !important;
+  color: #ff6b81 !important;
+  text-align: center !important;
+}
+
+.error {
+  color: #ff6b81 !important;
+  font-size: 0.875rem !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Guest Experience Component */
+.guest-experience {
+  max-width: 600px !important;
+  margin: 2rem auto !important;
+  padding: 2rem !important;
+  background: rgba(30, 30, 40, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--custom-border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  text-align: center !important;
+}
+
+.guest-experience h3 {
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+  margin-bottom: 1rem !important;
+}
+
+.guest-experience p {
+  color: var(--custom-text-gray) !important;
+  margin-bottom: 1.5rem !important;
+  line-height: 1.6 !important;
+}
+
+.auth-options {
+  display: flex !important;
+  gap: 1rem !important;
+  justify-content: center !important;
+  flex-wrap: wrap !important;
+}
+
+.auth-button.signup-button,
+.auth-button.signin-button {
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  border: none !important;
+  border-radius: 30px !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  text-decoration: none !important;
+  display: inline-block !important;
+  min-width: 120px !important;
+}
+
+.auth-button.signup-button:hover,
+.auth-button.signin-button:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 10px 25px rgba(102, 16, 242, 0.4) !important;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+/* Signup Prompt Component */
+.signup-prompt {
+  margin: 1rem 0 !important;
+  padding: 1rem !important;
+  background: rgba(102, 16, 242, 0.15) !important;
+  border: 1px solid rgba(102, 16, 242, 0.3) !important;
+  border-radius: 15px !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+.signup-prompt-content {
+  flex: 1 !important;
+  min-width: 200px !important;
+}
+
+.signup-prompt p {
+  margin: 0 !important;
+  color: var(--custom-text-light) !important;
+  line-height: 1.5 !important;
+}
+
+.signup-prompt-button {
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  border: none !important;
+  border-radius: 30px !important;
+  color: white !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  white-space: nowrap !important;
+}
+
+.signup-prompt-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(102, 16, 242, 0.4) !important;
+  text-decoration: none !important;
+  color: white !important;
+}
+
+.signup-prompt-inline {
+  max-width: 600px !important;
+  margin: 1.5rem auto !important;
+}
+
+.signup-prompt-header {
+  position: sticky !important;
+  top: 1rem !important;
+  z-index: 1000 !important;
+  max-width: 800px !important;
+  margin: 0 auto 1rem !important;
+}
+
+.signup-prompt-footer {
+  margin: 1rem auto !important;
+  max-width: 600px !important;
+}
+
+/* Auth Guard Loading */
+.auth-guard-loading {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 2rem !important;
+}
+
+.loading-spinner {
+  color: var(--custom-accent-blue) !important;
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+}
+
+/* Profile Component */
+.profile-container {
+  max-width: 600px !important;
+  margin: 2rem auto !important;
+  padding: 2rem !important;
+  background: rgba(30, 30, 40, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 20px !important;
+  border: 1px solid var(--custom-border) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+  color: var(--custom-text-light) !important;
+}
+
+.profile-container h2 {
+  text-align: center !important;
+  margin-bottom: 1.5rem !important;
+  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+}
+
+.profile-info {
+  margin-bottom: 1.5rem !important;
+}
+
+.profile-field {
+  margin-bottom: 1rem !important;
+}
+
+.profile-field label {
+  display: block !important;
+  font-weight: 600 !important;
+  color: var(--custom-text-light) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.profile-field span {
+  display: block !important;
+  padding: 0.5rem !important;
+  background: rgba(20, 20, 30, 0.6) !important;
+  border-radius: 8px !important;
+  color: var(--custom-text-gray) !important;
+}
+
 /* Tables */
 table {
   background: rgba(30, 30, 40, 0.6) !important;

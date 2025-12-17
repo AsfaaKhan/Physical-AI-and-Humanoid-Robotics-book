@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+qdrant-client
+psycopg[binary]
+google-generativeai
+python-dotenv
+pydantic[email]
+pydantic-settings
+sqlalchemy
+asyncpg
+python-multipart
+sse-starlette
+aiofiles
+PyPDF2
+python-docx
+markdown
+passlib[bcrypt]

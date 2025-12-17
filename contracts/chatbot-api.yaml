@@ -1,0 +1,152 @@
+openapi: 3.0.0
+info:
+  title: RAG Chatbot API
+  description: API for the RAG chatbot integration between frontend and backend
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Development server
+  - url: https://your-production-url.com
+    description: Production server
+
+paths:
+  /api/chat:
+    post:
+      summary: Send a question to the RAG agent
+      description: Processes user questions and returns answers grounded in book content with source references
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Successful response from the RAG agent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Bad request - invalid input parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    ChatRequest:
+      type: object
+      required:
+        - question
+      properties:
+        question:
+          type: string
+          description: The user's question about the book content
+          example: "What are the key principles of robot navigation?"
+        session_id:
+          type: string
+          description: Optional session identifier for maintaining conversation context
+          example: "sess_12345"
+        selected_text:
+          type: string
+          description: Optional selected text to provide additional context
+          example: "Robot navigation involves path planning, obstacle avoidance, and localization."
+        metadata:
+          type: object
+          description: Additional metadata for query processing
+          additionalProperties: true
+
+    ChatResponse:
+      type: object
+      required:
+        - answer
+        - sources
+        - session_id
+        - status
+      properties:
+        answer:
+          type: string
+          description: The agent's response to the user's question
+          example: "Robot navigation is based on three key principles: path planning algorithms..."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceReference'
+          description: List of sources used to generate the response
+        session_id:
+          type: string
+          description: Session identifier for follow-up questions
+          example: "sess_12345"
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO timestamp of the response
+          example: "2025-12-14T10:30:00Z"
+        status:
+          type: string
+          enum: [success, error]
+          description: Status of the response
+          example: "success"
+
+    SourceReference:
+      type: object
+      required:
+        - url
+        - title
+        - content
+        - relevance_score
+      properties:
+        url:
+          type: string
+          description: URL or path to the source
+          example: "/chapter-5/navigation-principles"
+        title:
+          type: string
+          description: Title of the source
+          example: "Chapter 5: Navigation Principles"
+        content:
+          type: string
+          description: Relevant content snippet from the source
+          example: "Robot navigation involves path planning, obstacle avoidance, and localization."
+        page_number:
+          type: number
+          description: Page number in the book (if applicable)
+          example: 125
+        section:
+          type: string
+          description: Section identifier in the book
+          example: "5.2.1 Path Planning"
+        relevance_score:
+          type: number
+          minimum: 0
+          maximum: 1
+          description: Relevance score of the source to the query
+          example: 0.85
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - status
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Invalid input parameters"
+        status:
+          type: string
+          enum: [error]
+          description: Status of the response
+          example: "error"
+        details:
+          type: object
+          description: Additional error details (optional)
+          additionalProperties: true
