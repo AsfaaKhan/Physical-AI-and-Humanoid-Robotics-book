@@ -203,8 +203,17 @@ body {
 
   /* Make sure right-positioned items are included in mobile menu */
   .navbar__items--right {
+    display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
+    width: 100% !important;
+  }
+
+  /* Ensure all navbar items are visible in mobile sidebar */
+  .navbar-sidebar .menu,
+  .navbar-sidebar .menu__list,
+  .navbar-sidebar .menu__list-item {
+    width: 100% !important;
   }
 
   /* Style the mobile sidebar items when it's open */
@@ -232,8 +241,8 @@ body {
   }
 
   /* Special styling for auth links in mobile sidebar */
-  .navbar-sidebar .menu__link[href$="/auth/signup"],
-  .navbar-sidebar .menu__link[href$="/auth/signin"] {
+  .navbar-sidebar .menu__link[href="/auth/signup"],
+  .navbar-sidebar .menu__link[href="/auth/signin"] {
     background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
@@ -242,32 +251,6 @@ body {
     text-align: left !important;
     margin: 0.5rem 1rem !important;
     border: 1px solid rgba(102, 16, 242, 0.3) !important;
-  }
-
-  /* Mobile dropdown menu styling */
-  .navbar-sidebar .dropdown__menu {
-    background: rgba(20, 20, 30, 0.9) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 1px solid var(--custom-border) !important;
-    border-radius: 12px !important;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
-    padding: 0.5rem 0 !important;
-    width: calc(100% - 2rem) !important;
-    margin: 0.25rem 1rem !important;
-  }
-
-  .navbar-sidebar .dropdown__link {
-    padding: 0.75rem 1.5rem !important;
-    margin: 0.125rem 0.5rem !important;
-    border-radius: 8px !important;
-    color: var(--custom-text-light) !important;
-    display: block !important;
-    width: calc(100% - 1rem) !important;
-  }
-
-  .navbar-sidebar .dropdown__link:hover {
-    background: rgba(102, 16, 242, 0.2) !important;
   }
 
   /* Mobile sidebar toggle adjustments */
