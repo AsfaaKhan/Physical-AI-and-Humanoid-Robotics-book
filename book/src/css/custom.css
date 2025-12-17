@@ -63,6 +63,11 @@ body {
   -webkit-backdrop-filter: blur(20px) !important;
   border-bottom: 1px solid var(--custom-border) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1000 !important;
+}
+
+.navbar__items {
+  align-items: center !important;
 }
 
 .navbar__brand {
@@ -100,6 +105,177 @@ body {
 
 .navbar__link:hover::after {
   width: 100% !important;
+}
+
+/* Mobile navbar styling */
+.navbar-sidebar {
+  background: rgba(10, 10, 10, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+}
+
+.navbar-sidebar__brand {
+  padding: 1rem !important;
+  border-bottom: 1px solid var(--custom-border) !important;
+}
+
+.navbar-sidebar__items {
+  padding: 1rem 0 !important;
+}
+
+.navbar-sidebar__item {
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  margin: 0.25rem 1rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar-sidebar__item:hover {
+  background: rgba(102, 16, 242, 0.2) !important;
+  transform: translateX(5px) !important;
+}
+
+.navbar-sidebar__close {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--custom-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+}
+
+.navbar-sidebar__close:hover {
+  background: rgba(255, 71, 87, 0.2) !important;
+  border-color: #ff4757 !important;
+  transform: scale(1.1) !important;
+}
+
+/* Hamburger menu button styling */
+.navbar__toggle {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid var(--custom-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  margin-right: 0.5rem !important;
+  z-index: 1001 !important;
+}
+
+.navbar__toggle:hover {
+  background: rgba(102, 16, 242, 0.2) !important;
+  border-color: var(--custom-accent-purple) !important;
+  transform: scale(1.05) !important;
+}
+
+/* Mobile sidebar menu z-index fix */
+.navbar-sidebar {
+  z-index: 1002 !important;
+}
+
+/* Ensure mobile menu appears above chatbot widget */
+@media (max-width: 996px) {
+  .navbar-sidebar {
+    z-index: 10000 !important; /* Higher than most elements */
+  }
+
+  .navbar-sidebar__backdrop {
+    z-index: 9999 !important; /* Ensure backdrop is below sidebar but above content */
+  }
+}
+
+/* Mobile navbar items styling - ensure all items including right-positioned ones appear */
+@media (max-width: 996px) {
+  .navbar__inner {
+    position: relative !important;
+  }
+
+  /* Make sure right-positioned items are included in mobile menu */
+  .navbar__items--right {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  /* Style the mobile sidebar items when it's open */
+  .navbar-sidebar .menu__list-item {
+    width: 100% !important;
+  }
+
+  .navbar-sidebar .menu__list {
+    padding: 1rem 0 !important;
+  }
+
+  .navbar-sidebar .menu__link {
+    width: 100% !important;
+    padding: 0.75rem 1.5rem !important;
+    margin: 0.25rem 1rem !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    display: block !important;
+    color: var(--custom-text-light) !important;
+  }
+
+  .navbar-sidebar .menu__link:hover {
+    background: rgba(102, 16, 242, 0.2) !important;
+    transform: translateX(5px) !important;
+  }
+
+  /* Special styling for auth links in mobile sidebar */
+  .navbar-sidebar .menu__link[href$="/auth/signup"],
+  .navbar-sidebar .menu__link[href$="/auth/signin"] {
+    background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 600 !important;
+    text-align: left !important;
+    margin: 0.5rem 1rem !important;
+    border: 1px solid rgba(102, 16, 242, 0.3) !important;
+  }
+
+  /* Mobile dropdown menu styling */
+  .navbar-sidebar .dropdown__menu {
+    background: rgba(20, 20, 30, 0.9) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid var(--custom-border) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    padding: 0.5rem 0 !important;
+    width: calc(100% - 2rem) !important;
+    margin: 0.25rem 1rem !important;
+  }
+
+  .navbar-sidebar .dropdown__link {
+    padding: 0.75rem 1.5rem !important;
+    margin: 0.125rem 0.5rem !important;
+    border-radius: 8px !important;
+    color: var(--custom-text-light) !important;
+    display: block !important;
+    width: calc(100% - 1rem) !important;
+  }
+
+  .navbar-sidebar .dropdown__link:hover {
+    background: rgba(102, 16, 242, 0.2) !important;
+  }
+
+  /* Mobile sidebar toggle adjustments */
+  .navbar-sidebar {
+    width: 80% !important;
+    max-width: 320px !important;
+    background: rgba(10, 10, 10, 0.95) !important;
+  }
 }
 
 /* Sidebar styling */
@@ -782,8 +958,27 @@ blockquote {
     font-size: 1.2rem !important;
   }
 
+  .navbar {
+    padding: 0.5rem 1rem !important;
+  }
+
+  .navbar__items {
+    min-height: 56px !important;
+  }
+
   .navbar-sidebar {
-    background: linear-gradient(135deg, #0a0a0a, #1a1a2e) !important;
+    background: rgba(10, 10, 10, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+
+  .navbar-sidebar__brand {
+    padding: 1.5rem 1.5rem 1rem 1.5rem !important;
+  }
+
+  .navbar-sidebar__items.navbar-sidebar__items--show-secondary {
+    max-height: calc(100vh - 150px) !important;
+    overflow-y: auto !important;
   }
 
   .sidebar {
@@ -801,6 +996,17 @@ blockquote {
 
   .module-card .card-icon {
     font-size: 3rem !important;
+  }
+
+  /* Mobile navigation specific styles */
+  .navbar__toggle {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .navbar-sidebar__item {
+    padding: 1rem 1.5rem !important;
+    margin: 0.125rem 1rem !important;
   }
 }
 
@@ -821,5 +1027,27 @@ blockquote {
   .module-card-button {
     padding: 0.7rem 1.4rem !important;
     font-size: 0.8rem !important;
+  }
+
+  /* Additional mobile-specific navbar fixes */
+  .navbar {
+    padding: 0.75rem 1rem !important;
+  }
+
+  .navbar__brand {
+    font-size: 1.1rem !important;
+  }
+
+  .navbar__title {
+    font-size: 1.1rem !important;
+  }
+
+  .navbar__toggle {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .navbar__items {
+    min-height: 50px !important;
   }
 }
