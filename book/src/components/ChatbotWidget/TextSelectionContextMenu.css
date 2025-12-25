@@ -1,0 +1,67 @@
+.text-selection-context-menu {
+  background: #2c3e50;
+  border: 1px solid #34495e;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 4px 0;
+  min-width: 140px;
+  backdrop-filter: blur(10px);
+  background: rgba(44, 62, 80, 0.95);
+}
+
+.context-menu-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 12px;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: #ecf0f1;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.context-menu-option:hover {
+  background: rgba(52, 73, 94, 0.8);
+}
+
+.context-menu-option:focus {
+  outline: 2px solid #3498db;
+  outline-offset: -2px;
+}
+
+.context-menu-option .menu-icon {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+/* Animation for smooth appearance */
+.text-selection-context-menu {
+  animation: contextMenuAppear 0.15s ease-out;
+}
+
+@keyframes contextMenuAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .text-selection-context-menu {
+    min-width: 120px;
+    font-size: 13px;
+  }
+
+  .context-menu-option {
+    padding: 6px 10px;
+  }
+}

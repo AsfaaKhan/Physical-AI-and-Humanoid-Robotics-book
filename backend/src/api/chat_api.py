@@ -47,7 +47,8 @@ async def chat_endpoint(request: ChatRequest):
         agent_response = rag_agent.ask(
             question=request.question,
             filters=request.metadata or {},  # Use metadata for filtering if provided
-            conversation_history=None  # For now, not using conversation history
+            conversation_history=None,  # For now, not using conversation history
+            selected_text=request.selected_text  # Pass selected text for higher priority context
         )
 
         # Convert the agent response to the API response format

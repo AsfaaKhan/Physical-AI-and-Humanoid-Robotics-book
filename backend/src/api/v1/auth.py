@@ -28,111 +28,142 @@ auth_router = APIRouter()
 @auth_router.post("/auth/signup", status_code=status.HTTP_201_CREATED, response_model=SignupResponse)
 async def signup(request: SignupRequest, db: Session = Depends(get_db)) -> SignupResponse:
     """Register a new user with background information."""
-    # Check if user already exists in our system
-    existing_user = db.query(User).filter(User.email == request.email).first()
-    if existing_user:
-        raise EmailAlreadyExistsException(request.email)
+    # Check if user already exists in Better Auth first
+    try:
+        # Check if user exists in our system
+        existing_user = db.query(User).filter(User.email == request.email).first()
+        if existing_user:
+            # User already exists in our database
+            raise EmailAlreadyExistsException(request.email)
 
-    # Create user through Better Auth service
-    better_auth_response = better_auth_client.create_user(
-        email=request.email,
-        password=request.password,
-        user_data={"name": request.email.split("@")[0]}  # Extract name from email as default
-    )
+        # Try to get user from Better Auth service to check if they already exist there
+        # If user exists in Better Auth but not in our DB, we can link them
+        # But for signup, we'll create in Better Auth first
+        better_auth_response = better_auth_client.create_user(
+            email=request.email,
+            password=request.password,
+            user_data={"name": request.email.split("@")[0]}  # Extract name from email as default
+        )
 
-    # Use the user ID from Better Auth
-    user_id = better_auth_response.get("id") or str(uuid.uuid4())
+        # Use the user ID from Better Auth
+        user_id = better_auth_response.get("id")
 
-    # Create user in our system to store additional profile data
-    user = User(user_id=user_id, email=request.email)
-    db.add(user)
-    db.commit()
-    db.refresh(user)
+        # Check if user already exists in our database (using the Better Auth user ID)
+        existing_user_by_id = db.query(User).filter(User.user_id == user_id).first()
+        if existing_user_by_id:
+            # User already exists, shouldn't happen during signup but just in case
+            raise EmailAlreadyExistsException(request.email)
 
-    # Create user profile with background information using the service
-    profile = user_profile_service.create_profile(
-        db,
-        user_id=user_id,
-        software_experience=request.background['software_experience'],
-        programming_background=request.background['programming_background'],
-        hardware_knowledge=request.background['hardware_knowledge']
-    )
+        # Create user in our system to store additional profile data
+        user = User(user_id=user_id, email=request.email)
+        db.add(user)
+        db.commit()
+        db.refresh(user)
 
-    # Create access token
-    access_token_expires = timedelta(minutes=30)  # Use settings value in real implementation
-    access_token = create_access_token(
-        data={"sub": user_id, "email": user.email},
-        expires_delta=access_token_expires
-    )
+        # Create user profile with background information using the service
+        profile = user_profile_service.create_profile(
+            db,
+            user_id=user_id,
+            software_experience=request.background['software_experience'],
+            programming_background=request.background['programming_background'],
+            hardware_knowledge=request.background['hardware_knowledge']
+        )
 
-    # Create session
-    session, session_token = SessionManager.create_session(db, user_id)
+        # Create access token
+        access_token_expires = timedelta(minutes=30)  # Use settings value in real implementation
+        access_token = create_access_token(
+            data={"sub": user_id, "email": user.email},
+            expires_delta=access_token_expires
+        )
 
-    return {
-        "user_id": user_id,
-        "email": user.email,
-        "session_token": session_token,  # In real implementation, you might return the access_token
-        "profile_complete": True,
-        "background": {
-            "software_experience": profile.software_experience,
-            "programming_background": profile.programming_background,
-            "hardware_knowledge": profile.hardware_knowledge
+        # Create session
+        session, session_token = SessionManager.create_session(db, user_id)
+
+        return {
+            "user_id": user_id,
+            "email": user.email,
+            "session_token": session_token,  # In real implementation, you might return the access_token
+            "profile_complete": True,
+            "background": {
+                "software_experience": profile.software_experience,
+                "programming_background": profile.programming_background,
+                "hardware_knowledge": profile.hardware_knowledge
+            }
         }
-    }
+    except EmailAlreadyExistsException:
+        raise
+    except Exception as e:
+        # Rollback transaction on error
+        db.rollback()
+        raise e
 
 
 @auth_router.post("/auth/signin", response_model=SigninResponse)
 async def signin(request: SigninRequest, db: Session = Depends(get_db)) -> SigninResponse:
     """Authenticate existing user."""
-    # Verify credentials with Better Auth service
-    better_auth_response = better_auth_client.verify_user_password(
-        email=request.email,
-        password=request.password
-    )
+    try:
+        # Verify credentials with Better Auth service
+        better_auth_response = better_auth_client.verify_user_password(
+            email=request.email,
+            password=request.password
+        )
 
-    if not better_auth_response or "user" not in better_auth_response:
-        raise InvalidCredentialsException()
+        if not better_auth_response or "user" not in better_auth_response:
+            raise InvalidCredentialsException()
 
-    user_data = better_auth_response["user"]
-    user_id = user_data["id"]
-    email = user_data["email"]
+        user_data = better_auth_response["user"]
+        user_id = user_data["id"]
+        email = user_data["email"]
 
-    # Find user in our system
-    user = db.query(User).filter(User.user_id == user_id).first()
-    if not user:
-        # If user doesn't exist in our system, create a record (this might happen if they registered directly with Better Auth)
-        user = User(user_id=user_id, email=email)
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        # Find user in our system by Better Auth user ID
+        user = db.query(User).filter(User.user_id == user_id).first()
 
-    # Get user profile using the service
-    profile = user_profile_service.get_profile(db, user.user_id)
+        if user:
+            # User exists, update lastLoginAt
+            user.last_login_at = datetime.utcnow()
+            db.commit()
+            db.refresh(user)
 
-    # Create access token
-    access_token_expires = timedelta(minutes=30)
-    access_token = create_access_token(
-        data={"sub": user.user_id, "email": user.email},
-        expires_delta=access_token_expires
-    )
+            # Get user profile using the service
+            profile = user_profile_service.get_profile(db, user.user_id)
+        else:
+            # User does not exist in our system, create user record as fallback
+            user = User(user_id=user_id, email=email)
+            db.add(user)
+            db.commit()
+            db.refresh(user)
 
-    # Create session
-    session, session_token = SessionManager.create_session(db, user.user_id)
+            # User is new to our system, profile may not exist yet
+            profile = user_profile_service.get_profile(db, user.user_id)
 
-    result = {
-        "user_id": user.user_id,
-        "email": user.email,
-        "session_token": session_token,  # In real implementation, you might return the access_token
-    }
+        # Create access token
+        access_token_expires = timedelta(minutes=30)
+        access_token = create_access_token(
+            data={"sub": user.user_id, "email": user.email},
+            expires_delta=access_token_expires
+        )
 
-    if profile:
-        result["background"] = {
-            "software_experience": profile.software_experience,
-            "programming_background": profile.programming_background,
-            "hardware_knowledge": profile.hardware_knowledge
+        # Create session
+        session, session_token = SessionManager.create_session(db, user.user_id)
+
+        result = {
+            "user_id": user.user_id,
+            "email": user.email,
+            "session_token": session_token,  # In real implementation, you might return the access_token
         }
 
-    return result
+        if profile:
+            result["background"] = {
+                "software_experience": profile.software_experience,
+                "programming_background": profile.programming_background,
+                "hardware_knowledge": profile.hardware_knowledge
+            }
+
+        return result
+    except Exception as e:
+        # Rollback transaction on error
+        db.rollback()
+        raise e
 
 
 @auth_router.post("/auth/signout", response_model=SignoutResponse)

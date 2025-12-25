@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useChatbot } from './ChatbotContext';
+import TextSelectionContextMenu from './TextSelectionContextMenu';
 import './ChatbotWidget.css';
 
 const ChatbotWidget = () => {
@@ -19,25 +20,69 @@ const ChatbotWidget = () => {
   } = useChatbot();
 
   const messagesEndRef = useRef(null);
+  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0 });
 
   // Function to get selected text from the page
   const getSelectedText = () => {
-    const text = window.getSelection().toString().trim();
+    const selection = window.getSelection();
+    const text = selection.toString().trim();
     if (text) {
       setSelectedText(text);
     }
     return text;
   };
 
-  // Handle text selection
+  // Handle context menu for selected text
+  const handleContextMenu = (e) => {
+    const selectedText = window.getSelection().toString().trim();
+    if (selectedText) {
+      e.preventDefault();
+      setContextMenu({
+        visible: true,
+        x: e.clientX,
+        y: e.clientY
+      });
+    } else {
+      setContextMenu({ visible: false, x: 0, y: 0 });
+    }
+  };
+
+  // Handle explaining selected text
+  const handleExplainText = () => {
+    const selectedText = window.getSelection().toString().trim();
+    if (selectedText) {
+      // Set the input value to a specific prompt for explaining the selected text
+      updateInputValue(`Explain this: ${selectedText}`);
+      // Close the context menu
+      setContextMenu({ visible: false, x: 0, y: 0 });
+      // Focus the chat if it's not open
+      if (!isChatOpen) {
+        toggleChat();
+      }
+    }
+  };
+
+  // Handle text selection and context menu
   useEffect(() => {
     const handleSelection = () => {
-      getSelectedText();
+      const text = getSelectedText();
+      // Don't show context menu on selection, only on right-click
     };
 
+    const handleClickOutside = () => {
+      setContextMenu({ visible: false, x: 0, y: 0 });
+    };
+
+    // Add event listeners
     document.addEventListener('mouseup', handleSelection);
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('click', handleClickOutside);
+
+    // Clean up event listeners
     return () => {
       document.removeEventListener('mouseup', handleSelection);
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, []);
 
@@ -53,7 +98,21 @@ const ChatbotWidget = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (inputValue.trim() && !isLoading) {
-      await sendMessage(inputValue, selectedText);
+      // Check if this is an "Explain this" command and prioritize the selected text
+      const isExplainCommand = inputValue.trim().startsWith('Explain this: ');
+      let textToSend = inputValue;
+      let contextText = selectedText || null;
+
+      // If it's an explain command, we'll send a specific prompt to focus on explaining
+      if (isExplainCommand) {
+        // Extract the selected text from the command if available, otherwise use selectedText state
+        const extractedText = inputValue.substring('Explain this: '.length).trim();
+        contextText = extractedText || selectedText || null;
+        // Create a specific question to focus the AI on explaining
+        textToSend = `Please explain the following text in simple language: ${extractedText || selectedText}`;
+      }
+
+      await sendMessage(textToSend, contextText);
     }
   };
 
@@ -373,6 +432,13 @@ const ChatbotWidget = () => {
           </div>
         </form>
       </div>
+
+      {/* Context menu for explaining selected text */}
+      <TextSelectionContextMenu
+        isVisible={contextMenu.visible}
+        position={{ x: contextMenu.x, y: contextMenu.y }}
+        onExplainText={handleExplainText}
+      />
     </div>
   );
 

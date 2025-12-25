@@ -16,6 +16,7 @@ class User(Base):
     email = Column(String(255), unique=True, index=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
+    last_login_at = Column(DateTime(timezone=True), server_default=func.now())
     is_verified = Column(Boolean, default=False)
 
     def __init__(self, user_id: str = None, email: str = None):
@@ -23,6 +24,7 @@ class User(Base):
         self.email = email
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
+        self.last_login_at = datetime.now()
 
 
 class UserProfile(Base):

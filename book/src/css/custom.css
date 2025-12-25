@@ -57,209 +57,125 @@ body {
 }
 
 /* Navbar styling */
-.navbar {
-  background: rgba(10, 10, 10, 0.8) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border-bottom: 1px solid var(--custom-border) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
-  z-index: 1000 !important;
-}
-
-.navbar__items {
-  align-items: center !important;
-}
-
-.navbar__brand {
-  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  font-weight: 800 !important;
-}
-
-.navbar__title {
-  background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  font-weight: 700 !important;
-}
-
-.navbar__link {
-  color: #e6e6e6 !important;
-  transition: all 0.3s ease !important;
-  position: relative !important;
-}
-
-.navbar__link::after {
-  content: '' !important;
-  position: absolute !important;
-  bottom: -5px !important;
-  left: 0 !important;
-  width: 0 !important;
-  height: 2px !important;
-  background: linear-gradient(90deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
-  transition: width 0.3s ease !important;
-}
-
-.navbar__link:hover::after {
-  width: 100% !important;
-}
-
-/* Mobile navbar styling */
-.navbar-sidebar {
-  background: rgba(10, 10, 10, 0.95) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-}
-
-.navbar-sidebar__brand {
-  padding: 1rem !important;
-  border-bottom: 1px solid var(--custom-border) !important;
-}
-
-.navbar-sidebar__items {
-  padding: 1rem 0 !important;
-}
-
-.navbar-sidebar__item {
-  padding: 0.75rem 1.5rem !important;
-  border-radius: 8px !important;
-  margin: 0.25rem 1rem !important;
-  transition: all 0.3s ease !important;
-}
-
-.navbar-sidebar__item:hover {
-  background: rgba(102, 16, 242, 0.2) !important;
-  transform: translateX(5px) !important;
-}
-
-.navbar-sidebar__close {
-  position: absolute !important;
-  top: 1rem !important;
-  right: 1rem !important;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid var(--custom-border) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-}
-
-.navbar-sidebar__close:hover {
-  background: rgba(255, 71, 87, 0.2) !important;
-  border-color: #ff4757 !important;
-  transform: scale(1.1) !important;
-}
-
-/* Hamburger menu button styling */
-.navbar__toggle {
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
-  background: rgba(255, 255, 255, 0.1) !important;
-  border: 1px solid var(--custom-border) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-  transition: all 0.3s ease !important;
-  margin-right: 0.5rem !important;
-  z-index: 1001 !important;
-}
-
-.navbar__toggle:hover {
-  background: rgba(102, 16, 242, 0.2) !important;
-  border-color: var(--custom-accent-purple) !important;
-  transform: scale(1.05) !important;
-}
-
-/* Mobile sidebar menu z-index fix */
-.navbar-sidebar {
-  z-index: 1002 !important;
-}
-
-/* Ensure mobile menu appears above chatbot widget */
+/* =========================================
+   MOBILE NAVBAR SIDEBAR – HARD FIX
+========================================= */
 @media (max-width: 996px) {
+
+  /* Lock page scroll when sidebar is open */
+  body[class*='navbar-sidebar--show'] {
+    overflow: hidden !important;
+  }
+
+  /* Sidebar container */
   .navbar-sidebar {
-    z-index: 10000 !important; /* Higher than most elements */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    height: 100vh !important;
+    width: 85% !important;
+    max-width: 320px !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
   }
 
+  /* Sidebar backdrop */
   .navbar-sidebar__backdrop {
-    z-index: 9999 !important; /* Ensure backdrop is below sidebar but above content */
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 9999 !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  /* Brand section (top) */
+  .navbar-sidebar__brand {
+    flex-shrink: 0 !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid var(--custom-border) !important;
+  }
+
+  /* Scrollable menu area */
+  .navbar-sidebar__items {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding-bottom: 2rem !important;
+  }
+
+  /* Menu links */
+  .navbar-sidebar .menu__link {
+    display: block !important;
+    padding: 0.75rem 1.25rem !important;
+    margin: 0.25rem 1rem !important;
+    border-radius: 10px !important;
+  }
+
+  /* Fix dropdown inside sidebar */
+  .navbar-sidebar .dropdown__menu {
+    position: static !important;
+    box-shadow: none !important;
+  }
+
+
+  /* 🔑 FORCE NAVBAR ITEMS TO APPEAR ON DOCS PAGES */
+  .navbar-sidebar .menu--responsive {
+    display: block !important;
+  }
+
+  .navbar-sidebar .menu--responsive .menu__list {
+    display: block !important;
+  }
+
+  .navbar-sidebar .menu--responsive .menu__list-item {
+    display: block !important;
+  }
+   /* Ensure docs sidebar + navbar both show */
+  .navbar-sidebar__items > div {
+    display: block !important;
   }
 }
 
-/* Mobile navbar items styling - ensure all items including right-positioned ones appear */
 @media (max-width: 996px) {
-  .navbar__inner {
-    position: relative !important;
-  }
 
-  /* Make sure right-positioned items are included in mobile menu */
-  .navbar__items--right {
+  /* ===============================
+     SHOW NAVBAR ITEMS ON DOCS PAGES
+  =============================== */
+
+  .navbar-sidebar .navbar__items {
     display: flex !important;
     flex-direction: column !important;
     align-items: stretch !important;
-    width: 100% !important;
+    padding: 0.75rem 0 !important;
   }
 
-  /* Ensure all navbar items are visible in mobile sidebar */
-  .navbar-sidebar .menu,
-  .navbar-sidebar .menu__list,
-  .navbar-sidebar .menu__list-item {
-    width: 100% !important;
+  .navbar-sidebar .navbar__items--left,
+  .navbar-sidebar .navbar__items--right {
+    display: flex !important;
+    flex-direction: column !important;
   }
 
-  /* Style the mobile sidebar items when it's open */
-  .navbar-sidebar .menu__list-item {
-    width: 100% !important;
-  }
-
-  .navbar-sidebar .menu__list {
-    padding: 1rem 0 !important;
-  }
-
-  .navbar-sidebar .menu__link {
-    width: 100% !important;
-    padding: 0.75rem 1.5rem !important;
-    margin: 0.25rem 1rem !important;
-    border-radius: 8px !important;
-    transition: all 0.3s ease !important;
+  .navbar-sidebar .navbar__item {
     display: block !important;
-    color: var(--custom-text-light) !important;
+    margin: 0.25rem 0 !important;
   }
 
-  .navbar-sidebar .menu__link:hover {
-    background: rgba(102, 16, 242, 0.2) !important;
-    transform: translateX(5px) !important;
-  }
-
-  /* Special styling for auth links in mobile sidebar */
-  .navbar-sidebar .menu__link[href="/auth/signup"],
-  .navbar-sidebar .menu__link[href="/auth/signin"] {
-    background: linear-gradient(135deg, var(--custom-accent-blue), var(--custom-accent-purple)) !important;
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    background-clip: text !important;
-    font-weight: 600 !important;
-    text-align: left !important;
-    margin: 0.5rem 1rem !important;
-    border: 1px solid rgba(102, 16, 242, 0.3) !important;
-  }
-
-  /* Mobile sidebar toggle adjustments */
-  .navbar-sidebar {
-    width: 80% !important;
-    max-width: 320px !important;
-    background: rgba(10, 10, 10, 0.95) !important;
+  .navbar-sidebar .navbar__link {
+    padding: 0.75rem 1.25rem !important;
+    margin: 0.25rem 1rem !important;
+    border-radius: 10px !important;
+    width: calc(100% - 2rem) !important;
   }
 }
+
+
+
+
+
+
+
+
+
 
 /* Sidebar styling */
 .menu {

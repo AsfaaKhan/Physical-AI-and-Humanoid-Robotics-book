@@ -93,8 +93,21 @@ const config: Config = {
           label: 'Book Chapters',
         },
         {to: '/blog', label: 'Blog', position: 'left'},
-        {to: '/auth/signup', label: 'Sign Up', position: 'right'},
-        {to: '/auth/signin', label: 'Sign In', position: 'right'},
+        {
+          type: 'dropdown',
+          label: 'Account',
+          position: 'right',
+          items: [
+            {
+              to: '/auth/signup',
+              label: 'Sign Up',
+            },
+            {
+              to: '/auth/signin',
+              label: 'Sign In',
+            },
+          ],
+        },
         {
           href: 'https://github.com/AsfaaKhan/Physical-AI-and-Humanoid-Robotics-book',
           label: 'GitHub',

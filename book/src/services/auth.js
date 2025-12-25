@@ -1,7 +1,9 @@
 // API service for authentication
 const API_BASE_URL = typeof process !== 'undefined' && process.env && process.env.REACT_APP_AUTH_API_URL
   ? process.env.REACT_APP_AUTH_API_URL
-  : 'http://localhost:5000/api/v1';
+  : (typeof window !== 'undefined' && window.location.hostname !== 'localhost')
+    ? 'https://your-deployed-backend-url.com/api/v1' // Update this to your actual deployed backend URL
+    : 'http://localhost:5000/api/v1';
 
 // Generic API call function with error handling
 const apiCall = async (endpoint, options = {}) => {
